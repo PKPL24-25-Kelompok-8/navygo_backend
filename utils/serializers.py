@@ -6,13 +6,13 @@ from .models import Reservation
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = ["customer_id", "service_id", "type"]
+        fields = ["navygator_id", "service_id", "type"]
 
     def validate(self, data):
 
-        if not self.is_valid_uuid(str(data["customer_id"])):
+        if not self.is_valid_uuid(str(data["navygator_id"])):
             raise serializers.ValidationError(
-                {"customer_id": "Customer ID doesn't confirm to UUID v4 standards."}
+                {"navygator_id": "Customer ID doesn't conform to UUID v4 standards."}
             )
 
         if not self.is_valid_uuid(str(data["service_id"])):
