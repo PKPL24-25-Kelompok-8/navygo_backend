@@ -1,5 +1,5 @@
 """
-ASGI config for navygo_reservation project.
+ASGI config for navygo_backend project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'navygo_reservation.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "navygo_backend.settings")
 
 application = get_asgi_application()
