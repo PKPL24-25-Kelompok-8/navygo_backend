@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: NavyGo Backend API
+  version: 1.0.0
+  description: The backend of NavyGo, including reservation, finance, and review services
+paths:
+  /api/reservations/:
+    get:
+      operationId: api_reservations_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+          description: ''
+components:
+  schemas:
+    Reservation:
+      type: object
+      properties:
+        navygator_id:
+          type: string
+          format: uuid
+        service_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          maxLength: 50
+      required:
+      - navygator_id
+      - service_id
+      - type
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

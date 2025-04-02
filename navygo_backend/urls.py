@@ -16,8 +16,31 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from reservation.views import CreateReservationViewSet, EditReservationViewSet
+
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path(
+        "api/reservations/<uuid:id>",
+        CreateReservationViewSet.as_view({"get": "retrieve"}),
+    ),
+    path(
+        "api/reservations/",
+        CreateReservationViewSet.as_view({"get": "list", "post": "create"}),
+    ),
+    path("api/reservations/", EditReservationViewSet.as_view({"put", "update"})),
+    # API schema
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Optional UI:
+    path(
+        "api/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
 ]

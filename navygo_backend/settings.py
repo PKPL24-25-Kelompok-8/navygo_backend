@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,10 +40,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "finance",
     "utils",
     "reservation",
     "review",
+    # Django REST Framework
     "rest_framework",
+    # Swagger for API Documentation
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -125,3 +132,27 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+with open(os.path.join(BASE_DIR, "secrets/public.pem"), "rb") as pub_key:
+    key_obj: RSAPublicKey = serialization.load_pem_public_key(pub_key.read())
+
+    verifying_key = key_obj.public_bytes(
+        serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
+    )
+
+SIMPLE_JWT = {"VERIFYING_KEY": verifying_key, "ALGORITHM": "RS256"}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "NavyGo Backend API",
+    "DESCRIPTION": "The backend of NavyGo, including reservation, finance, and review services",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}

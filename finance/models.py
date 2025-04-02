@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+# Create your models here.
 class BillStatus(models.Model):
     class StatusChoices(models.TextChoices):
         PENDING = "P", _("Pending")
@@ -17,18 +18,3 @@ class Bill(models.Model):
     created_at = models.DateTimeField(auto_created=True, editable=False)
     payment_method = models.UUIDField()
     status = models.ForeignKey(BillStatus, on_delete=models.CASCADE)
-
-
-class Review(models.Model):
-    bill = models.OneToOneField(Bill, on_delete=models.CASCADE)
-    comment = models.TextField(max_length=1000)
-    star_rating = models.DecimalField(max_digits=1, decimal_places=0)
-
-
-class Reservation(models.Model):
-    navygator_id = models.UUIDField()
-    service_id = models.UUIDField()
-    type = models.CharField(max_length=50)
-    bill = models.ForeignKey(
-        Bill, on_delete=models.CASCADE, related_name="reservations"
-    )

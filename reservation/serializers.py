@@ -1,9 +1,10 @@
-import re
 from rest_framework import serializers
 from .models import Reservation
 
+import re
 
-class ReservationSerializer(serializers.ModelSerializer):
+
+class CreateReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = ["navygator_id", "service_id", "type"]
@@ -29,3 +30,9 @@ class ReservationSerializer(serializers.ModelSerializer):
         )
 
         return bool(uuid_regex.match(uuid))
+
+
+class EditReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = ["type"]
