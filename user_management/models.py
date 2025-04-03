@@ -9,7 +9,7 @@ class Instansi(models.Model):
     nama_bank = models.CharField(max_length=100, blank=True, null=True)
     jumlah_layanan_diselesaikan = models.PositiveIntegerField(default=0)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
-    saldo_navggo = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    saldo_navygo = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
         # Jika foto_profil belum diisi, assign gambar default secara acak
@@ -24,7 +24,7 @@ class Instansi(models.Model):
 class Pelanggan(models.Model):
     user_id = models.UUIDField(primary_key=True)  # ID user dari service auth
     username = models.CharField(max_length=150)
-    saldo_navggo = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    saldo_navygo = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     def __str__(self):
         return f"Pelanggan user_id={self.user_id}"
