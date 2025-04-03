@@ -34,7 +34,7 @@ urlpatterns = [
         "api/reservations/",
         CreateReservationViewSet.as_view({"get": "list", "post": "create"}),
     ),
-    path("api/reservations/", EditReservationViewSet.as_view({"put", "update"})),
+    path("api/reservations/", EditReservationViewSet.as_view({"put": "update"})),
     # API schema
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # Optional UI:
