@@ -1,16 +1,25 @@
-from django.shortcuts import render
-from rest_framework.request import Request
-from rest_framework.viewsets import ModelViewSet
-from utils.models import Reservation
-from utils.serializers import ReservationSerializer
+from rest_framework import mixins, viewsets
+from .models import Reservation
+from .serializers import CreateReservationSerializer
+from rest_framework_simplejwt.authentication import JWTStatelessUserAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 # Create your views here.
-class ReservationViewSet(ModelViewSet):
+class CreateReservationViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    serializer_class = CreateReservationSerializer
+    authentication_classes = [JWTStatelessUserAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Reservation.objects.filter(navygator_id=self.request.user.user_id)
+
+
+class EditReservationViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = Reservation.objects.all()
-    serializer_class = ReservationSerializer
-
-    def list(self, request: Request):
-        pass
-
-    def create(self, request: Request):
-        pass
