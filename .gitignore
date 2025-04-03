@@ -5,3 +5,4 @@ __pycache__/
 !.env.vault
 db.sqlite3
 venv/
+env/
