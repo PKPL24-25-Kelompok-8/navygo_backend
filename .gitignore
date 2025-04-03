@@ -1,8 +1,8 @@
-env/
 __pycache__/
 .env*
 .flaskenv*
 !.env.project
 !.env.vault
-
 db.sqlite3
+venv/
+env/
