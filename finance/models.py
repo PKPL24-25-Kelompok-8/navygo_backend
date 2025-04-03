@@ -28,7 +28,7 @@ class BillStatus(models.Model):
         # Menggunakan get_status_display() agar menampilkan label (Pending, Confirmed, Cancelled)
         return f"{self.id} - {self.status}"
 
-class TRBillStatus(models.Model):
+class BillStatusLog(models.Model):
     """
     Mencatat relasi antara sebuah transaksi (transaction_id) dengan BillStatus (id).
     """
@@ -47,32 +47,22 @@ class TRBillStatus(models.Model):
     def __str__(self):
         return f"TRBillStatus: TxID={self.transaction_id} => Status={self.bill_status.status}"
 
-class KategoriTrNavypay(models.Model):
-    """
-    Model untuk kategori transaksi NavyPay, misalnya:
-    - top_up
-    - pembayaran
-    """
-    KATEGORI_CHOICES = (
-        ('top_up', 'Top Up'),
-        ('pembayaran', 'Pembayaran'),
-    )
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nama = models.CharField(max_length=50, choices=KATEGORI_CHOICES, unique=True)
-
-    def __str__(self):
-        return self.nama
-
 class TrNavypay(models.Model):
     """
     Model transaksi NavyPay untuk mencatat setiap aktivitas top-up maupun pembayaran.
     """
+
+    KATEGORI_CHOICES = (
+        ('top_up', 'Top Up'),
+        ('pembayaran', 'Pembayaran'),
+    )
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Menyimpan user_id dari service auth (baik pelanggan maupun instansi)
     user_id = models.UUIDField()
-    kategori = models.ForeignKey(KategoriTrNavypay, on_delete=models.CASCADE)
+    kategori = models.CharField(max_length=50, choices=KATEGORI_CHOICES, unique=True)
     nominal = models.DecimalField(max_digits=12, decimal_places=2)
     tanggal_transaksi = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_id} - {self.kategori.nama} - {self.nominal}"
+        return f"{self.user_id} - {self.kategori} - {self.nominal}"
