@@ -34,6 +34,8 @@ def get_random_default_image():
     default_images = [
         'default_images/default1.jpg',
         'default_images/default2.jpg',
-        'default_images/default3.jpg'
+        'default_images/default3.jpg',
+        'default_images/default4.jpg',
+        'default_images/default5.jpg'
     ]
     return random.choice(default_images)
