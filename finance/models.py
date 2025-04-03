@@ -60,7 +60,7 @@ class TrNavypay(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Menyimpan user_id dari service auth (baik pelanggan maupun instansi)
     user_id = models.UUIDField()
-    kategori = models.CharField(max_length=50, choices=KATEGORI_CHOICES, unique=True)
+    kategori = models.CharField(max_length=50, choices=KATEGORI_CHOICES)
     nominal = models.DecimalField(max_digits=12, decimal_places=2)
     tanggal_transaksi = models.DateTimeField(auto_now_add=True)
 
