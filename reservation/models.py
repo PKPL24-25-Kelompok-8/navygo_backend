@@ -1,6 +1,6 @@
 from django.db import models
 
-from finance.models import Bill
+from finance.models import *
 
 
 # Create your models here.
