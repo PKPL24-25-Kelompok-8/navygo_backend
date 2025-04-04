@@ -22,12 +22,12 @@ class Instansi(models.Model):
 
 
 class Pelanggan(models.Model):
-    user_id = models.UUIDField(primary_key=True)  # ID user dari service auth
+    navygator_id = models.UUIDField(primary_key=True)  # ID user dari service auth
     username = models.CharField(max_length=150)
     saldo_navygo = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     def __str__(self):
-        return f"Pelanggan user_id={self.user_id}"
+        return f"Pelanggan user_id={self.navygator_id}"
     
 def get_random_default_image():
     # Misalnya, simpan gambar default di folder 'default_images' di dalam MEDIA_ROOT

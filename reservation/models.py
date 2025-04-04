@@ -13,10 +13,10 @@ class Reservation(models.Model):
     [DAH COBA BERAPA KALI TRANSAKSI YANG SAMA][CHECKSUM]
     '''
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    navygator_id = models.ForeignKey(Pelanggan, on_delete=models.CASCADE, related_name="user")
-    service_id = models.ForeignKey(TransportationService, on_delete=models.CASCADE, related_name="service")
+    navygator_id = models.ForeignKey(Pelanggan, on_delete=models.CASCADE, related_name="reservation")
+    service_id = models.ForeignKey(TransportationService, on_delete=models.CASCADE, related_name="reservation")
     type = models.CharField(max_length=50)
     bill = models.ForeignKey(
-        Bill, on_delete=models.CASCADE, related_name="reservations"
+        Bill, on_delete=models.CASCADE, related_name="reservation"
     )
     price = models.DecimalField(max_digits=12, decimal_places=2)
