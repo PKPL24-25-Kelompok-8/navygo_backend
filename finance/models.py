@@ -1,14 +1,30 @@
 import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from user_management.models import *
+from transportation_service_manager.models import *
 
 
 # Create your models here.
 
 class Bill(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    navygator_id = models.ForeignKey(Pelanggan, on_delete=models.CASCADE, related_name="bill")
+    service_id = models.ForeignKey(TransportationService, on_delete=models.CASCADE, related_name="bill")
+    instansi_id = models.ForeignKey(Instansi, on_delete=models.CASCADE, related_name="bill")
+
     created_at = models.DateTimeField(auto_created=True, editable=False)
-    payment_method = models.UUIDField()
+    payment_method = models.CharField(max_length=50)
+    total_price = models.DecimalField(max_digits=20, decimal_places=2)
+    
+    KATEGORI_CHOICES = (
+        ('top_up', 'Top Up'),
+        ('pembayaran', 'Pembayaran'),
+    )
+
+    kategori = models.CharField(max_length=50, choices=KATEGORI_CHOICES)
+
+
 
 class BillStatus(models.Model):
     class StatusChoices(models.TextChoices):
@@ -36,12 +52,12 @@ class BillStatusLog(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Relasi ke transaksi
-    transaction_id = models.ForeignKey(Bill, on_delete=models.CASCADE, related_name='transaction_id')
+    transaction_id = models.ForeignKey(Bill, on_delete=models.CASCADE, related_name='bill_status_log')
 
     # Relasi ke BillStatus
-    bill_status = models.ForeignKey(BillStatus, on_delete=models.CASCADE, related_name='transaction_statuses')
+    bill_status = models.ForeignKey(BillStatus, on_delete=models.CASCADE, related_name='bill_status_log')
 
-    # Waktu pencatatan relasi status (opsional)
+    # Waktu pencatatan relasi status
     last_updated = models.DateTimeField(auto_created=True, editable=False)
 
     def __str__(self):
@@ -59,10 +75,10 @@ class TrNavypay(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Menyimpan user_id dari service auth (baik pelanggan maupun instansi)
-    user_id = models.UUIDField()
-    kategori = models.CharField(max_length=50, choices=KATEGORI_CHOICES, unique=True)
+    navygator_id = models.ForeignKey(Pelanggan, on_delete=models.CASCADE, related_name="navypay_transaction")
+    kategori = models.CharField(max_length=50, choices=KATEGORI_CHOICES)
     nominal = models.DecimalField(max_digits=12, decimal_places=2)
     tanggal_transaksi = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_id} - {self.kategori} - {self.nominal}"
+        return f"{self.navygator_id} - {self.kategori} - {self.nominal}"
