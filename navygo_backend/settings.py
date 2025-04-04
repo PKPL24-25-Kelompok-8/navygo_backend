@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "utils",
     "reservation",
     "review",
+    "transportation_service_manager",
     # Django REST Framework
     "rest_framework",
     # Swagger for API Documentation
