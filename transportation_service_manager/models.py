@@ -9,14 +9,16 @@ pass
 pass
 
 class City(models.Model):
-    id = models.CharField(primary_key=True, max_length=100)
+    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
 
 class Ocean(models.Model):
+    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
 class Port(models.Model):
+    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     ocean = models.ForeignKey(Ocean, on_delete=models.CASCADE, related_name="ports_ocean")
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="ports_city")

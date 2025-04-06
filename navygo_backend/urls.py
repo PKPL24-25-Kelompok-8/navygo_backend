@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from reservation.views import CreateReservationViewSet, EditReservationViewSet
 
 from drf_spectacular.views import (
@@ -34,6 +34,7 @@ urlpatterns = [
         "api/reservations/",
         CreateReservationViewSet.as_view({"get": "list", "post": "create"}),
     ),
+    path("api/", include("transportation_service_manager.urls")),
     path("api/reservations/", EditReservationViewSet.as_view({"put": "update"})),
     # API schema
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
@@ -43,4 +44,5 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+
 ]
