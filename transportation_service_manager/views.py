@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 from rest_framework import mixins, viewsets
-from .models import City, Ocean, Port
-from .serializers import CitySerializer, OceanSerializer, PortSerializer
+from .models import City, Ocean, Port, Vehicle, PortVisit
+from .serializers import CitySerializer, OceanSerializer, PortSerializer, VehicleSerializer, PortVisitSerializer
 from rest_framework_simplejwt.authentication import JWTStatelessUserAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
  
@@ -30,7 +30,8 @@ class OceanViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
-            return [IsAuthenticated()]
+            # return [IsAuthenticated()]
+            return [AllowAny()]
         else:
             return [AllowAny()]
 
@@ -44,6 +45,37 @@ class PortViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
-            return [IsAuthenticated()]
+            # return [IsAuthenticated()]
+            return [AllowAny()]
+        else:
+            return [AllowAny()]
+        
+class VehicleViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to view or edit Vehicle Model.
+    """
+    queryset = Vehicle.objects.all()
+    serializer_class = VehicleSerializer
+    authentication_classes = [JWTStatelessUserAuthentication]
+    
+    def get_permissions(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            # return [IsAuthenticated()]
+            return [AllowAny()]
+        else:
+            return [AllowAny()]
+        
+class PortVisitViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to view or edit PortVisit Model.
+    """
+    queryset = PortVisit.objects.all()
+    serializer_class = PortVisitSerializer
+    authentication_classes = [JWTStatelessUserAuthentication]
+    
+    def get_permissions(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            # return [IsAuthenticated()]
+            return [AllowAny()]
         else:
             return [AllowAny()]

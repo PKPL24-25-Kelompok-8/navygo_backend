@@ -9,16 +9,13 @@ pass
 pass
 
 class City(models.Model):
-    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
 
 class Ocean(models.Model):
-    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
 class Port(models.Model):
-    # id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     ocean = models.ForeignKey(Ocean, on_delete=models.CASCADE, related_name="ports_ocean")
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="ports_city")
@@ -26,13 +23,17 @@ class Port(models.Model):
 class Vehicle(models.Model):
     id = models.CharField(primary_key=True, max_length=100)
     name = models.CharField(max_length=255)
-    type = models.CharField(max_length=100)
+    company_name = models.CharField(max_length=255)
+    TYPE_CHOICES = [
+        ('Cruise Ship', 'Cruise Ship'),
+        ('Ocean Liner', 'Ocean Liner'),
+        ('Ferry', 'Ferry'),
+    ]
+    type = models.CharField(max_length=100, choices=TYPE_CHOICES)
     capacity = models.IntegerField()
-    current_port = models.ForeignKey(Port, on_delete=models.SET_NULL, null=True, blank=True, related_name="vehicles_current_port")
 
 class PortVisit(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255)
     current_vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name="portvisit_vehicle")
     current_port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name="portvisit_current")
     port_destination = models.ForeignKey(Port, on_delete=models.CASCADE, related_name="portvisit_desitnation")
