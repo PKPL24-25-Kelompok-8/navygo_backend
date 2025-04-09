@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import City, Ocean, Port, Vehicle, PortVisit
+from .models import City, Ocean, Port, Vehicle, PortVisit, TransportationService, StatusTransportationService
 
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,3 +44,18 @@ class PortVisitSerializer(serializers.ModelSerializer):
         model = PortVisit
         fields = ['id', 'current_vehicle', 'current_vehicle_id', 'current_port', 'current_port_id', 'port_destination', 'port_destination_id', 'arrival_time', 'departure_time']
 
+class TransportationServiceSerializer(serializers.ModelSerializer): 
+    port_visit = PortVisitSerializer(read_only=True)
+    status = serializers.PrimaryKeyRelatedField(
+        queryset=StatusTransportationService.objects.all(), source='status', write_only=True)
+    status_id = serializers.PrimaryKeyRelatedField(
+        queryset=StatusTransportationService.objects.all(), source='status', write_only=True)
+
+    class Meta:
+        model = TransportationService
+        fields = ['id', 'name', 'port_visit', 'port_visit_id', 'status', 'status_id', 'price']
+
+class StatusTransportationServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusTransportationService
+        fields = ['id', 'status']

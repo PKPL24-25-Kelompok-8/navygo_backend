@@ -13,10 +13,11 @@ class City(models.Model):
     country = models.CharField(max_length=255)
 
 class Ocean(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
 
 class Port(models.Model):
     name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
     ocean = models.ForeignKey(Ocean, on_delete=models.CASCADE, related_name="ports_ocean")
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="ports_city")
 
@@ -49,5 +50,24 @@ class TransportationService(models.Model):
 
 class StatusTransportationService(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255)
+    STATUS_CHOICES = [
+        ('Pending', 'Waiting For Payment'),
+        ('Paid', 'Payment Confirmed'),
+        ('Ticket Issued', 'Ticket Issued'),
+        ('Cancelled', 'Cancelled'),
+        ('Completed', 'Completed'),
+        ('Refunded', 'Refunded'),
+        ('Checked In', 'Checked In'),
+        ('Boarded', 'On Board'),
+        ('Delayed', 'Delayed'),
+        ('Completed', 'Completed'),
+        ('Expired', 'Expired'),
+        ('No Show', 'No Show'),
+        ('Refund Requested', 'Refund Requested'),
+        ('Refund Approved', 'Refund Approved'),
+        ('Refund Denied', 'Refund Denied'),
+        ('Refund Processed', 'Refund Processed'),
+        ('Refund Completed', 'Refund Completed'),
+    ]
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
